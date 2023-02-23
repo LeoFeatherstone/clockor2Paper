@@ -1,12 +1,13 @@
-### Simulating trees to test branching regresion
+# script smulates trees for test data
 library(ape)
 library(devtools)
 #install_github("sebastianduchene/NELSI")
 library(NELSI)
 library(TreeSim)
 library(geiger)
+library(phangorn)
 
-## function to get clades with 3-50 tips. I.e. the min possible to regress up to half
+## function to get clades within a specified size. I.e. the min possible to half of the num tips.
 getRandClade <- function(tr, minSize, maxSize){
     # num nodes=2*ntips-1
     minNode <- length(tr$tip.label)+1
@@ -69,23 +70,77 @@ simulate.FLC <- function(tree, params = list(clade.list, stem.clade.indicator, b
 }
 
 
-## Simulating 100 test trees. Using BD for heterochronous trees
+## Simulating 100 test trees. Using BD for heterochronous trees. Height added to 2000.
+## Using a Unif[100, 1000] for number of tips
+trees <- list()
+class(trees) <- "multiPhylo"
+
 set.seed(1234)
-trees <- lapply(1:100, function(x) sim.bdsky.stt(n=100, lambdasky=2.5, deathsky=1, sampprobsky=1, timesky=0, timestop=0))
-# Add time to tip names
-for (i in 1:length(trees)){
-	trees[[i]][[1]]$tip.label <- paste0(trees[[i]][[1]]$tip.label, '@', diag(vcv.phylo(trees[[i]][[1]])))
+for (i in 1:100) {
+  trees[i] <- sim.bdsky.stt(n=ceiling(runif(100, 1000, n = 1)),
+    lambdasky=2.5,
+    deathsky=1,
+    sampprobsky=1,
+    timesky=0,
+    timestop=0)
 }
 
-## Getting clades between 3 and 50 tips for a second clock
-clades <- lapply(trees, function(x) getRandClade(x[[1]], minSize=10, maxSize=50))
+# Add time to tip names
+for (i in seq_along(trees)){
+  trees[[i]]$tip.label <- paste0(trees[[i]]$tip.label,
+    '_',
+    as.Date(
+      date_decimal(
+        diag(vcv.phylo(trees[[i]])) + 2000)))
+}
+
+## Getting clades between 25 and floor(nTips / 2) tips for a second clock
+clades <- lapply(trees, 
+  function(x) getRandClade(
+    x, 
+    minSize=25, 
+    maxSize = floor(length(x$tip.label) / 2)))
+
+for (i in seq_along(clades)){
+  match <- which(trees[[i]]$tip.label %in% clades[[i]])
+  clades[[i]] <- paste0(clades[[i]], "_C1")
+  trees[[i]]$tip.label[match] <- paste0(trees[[i]]$tip.label[match], "_C1")
+  trees[[i]]$tip.label[-match] <- paste0(trees[[i]]$tip.label[-match], "_C0")
+}
+# TODO: Modify tip labs to add group name
+
+save(trees, file='baseTrees.RData')
 # Check dist of clade sizes
 #hist(unlist(lapply(clades, function(x) length(x))))
 
-## Generate simple FLC trees with bg rate of 1e-3, and local rate of 2e-3
-newTrees <- list()
+## Generate simple FLC trees with bg rate of 1e-3, and local rate of 5e-3
+newStemClade <- list()
+newStem <- list()
+newClade <- list()
+
 for (i in 1:length(trees)){
-    newTrees[[i]] <- simulate.FLC(trees[[i]][[1]], list(clade.list=clades[i], stem.clade.indicator=list(c(T, T)), background.rate=1, local.rates=2))$phylogram
+    newStemClade[[i]] <- simulate.FLC(trees[[i]], list(clade.list=clades[i], stem.clade.indicator=list(c(T, T)), background.rate=0.001, local.rates=0.005))$phylogram
+    newStem[[i]] <- simulate.FLC(trees[[i]], list(clade.list=clades[i], stem.clade.indicator=list(c(T, F)), background.rate=0.001, local.rates=0.005))$phylogram
+    newClade[[i]] <- simulate.FLC(trees[[i]], list(clade.list=clades[i], stem.clade.indicator=list(c(F, T)), background.rate=0.001, local.rates=0.005))$phylogram
+    # NB, the notional 1,1 element in ths treatment matrix is the regular trees themselves
+    print(i)
 }
-class(newTrees) <- 'multiPhylo'
-write.tree(newTrees, file=paste0(getwd(), '/sims/', 'flcStemClade.nwk.tree'))
+
+# saving trees
+for (i in 1:length(trees)){
+  write.tree(newStemClade[[i]], file=paste0(getwd(), '/sims/', "stemClade", i, ".nwk"))
+  write.tree(newStem[[i]], file=paste0(getwd(), '/sims/', "stem", i, ".nwk"))
+  write.tree(newClade[[i]], file=paste0(getwd(), '/sims/', "clade", i, ".nwk"))
+}
+
+class(trees) <- 'multiPhylo'
+write.tree(trees, file=paste0(getwd(), '/sims/', 'baseTrees.nwk.tree')) # doesn't want to work right now
+
+class(newStem) <- 'multiPhylo'
+write.tree(newStem, file=paste0(getwd(), '/sims/', 'flcStem.nwk.tree'))
+
+class(newClade) <- 'multiPhylo'
+write.tree(newClade, file=paste0(getwd(), '/sims/', 'flcClade.nwk.tree'))
+
+class(newStemClade) <- 'multiPhylo'
+write.tree(newStemClade, file=paste0(getwd(), '/sims/', 'flcStemClade.nwk.tree'))
