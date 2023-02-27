@@ -1,6 +1,15 @@
-# Clockor2:  Inferring global and local strict molecular clocks using root-to-tip regression
+\begin{flushright}
+\today
+\end{flushright}
+\begin{center}
+# Clockor2:  Inferring global and local strict molecular clocks using root-to-tip regression 
+\end{center}
+Leo A. Featherstone$^{\ast,1}$, Sebastian Duchene$^1$, Wytamma Wirth$^{1}$
+$^{1}$ Peter Doherty Institute for Infection and Immunity, University of Melbourne, Australia.
+*email: leo.featherstone@unimelb.edu.au
 
 ## Abstract
+
 
 ## Introduction
 - Need to give distrinction of strict, global and local molecular clocks.
@@ -12,6 +21,7 @@
 
 ## Methods
 ### Dependencies 
+Clockor2 has three key dependencies for handling, and plotting trees and RTT data. 
 - Clockor2 makes extensive use of the `phylotree.js` JavaScript Library for internal representation and manipulation of trees.
 - Plotting of trees uses `phylocanvas.js`, which was chosen due to its speed using WebGL plotting
 - '`Plotly.js` Was used for plotting regression interface
@@ -25,6 +35,7 @@ We denote the set of all tips *`T`*, with subsets of *`T`* termed *collections* 
 
 ### Algorithm for local clock search
 - Describe algorithm in pseudocode and include a gif of it working
+See [here](https://github.com/LeoFeatherstone/clockor2Paper/blob/main/algoEg2Clocks.gif) for an animation of how the clock search algorithm works for a search with two clocks. (Note to self - must update gif)
 
 ### Best fitting reroot
 -We implement functionality to select the best fitting root identically to Tempest.
