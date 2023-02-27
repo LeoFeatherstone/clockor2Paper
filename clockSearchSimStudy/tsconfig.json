@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@site/*": [ "../../clockor2/src/features/engine/*" ]
+    },
+    "watch": true
+  },
+  "extends": "../../clockor2/tsconfig.json",
+  "files": ["clockSearchWrapper.ts"]
+}
