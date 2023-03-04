@@ -52,6 +52,13 @@ $^{1}$ Peter Doherty Institute for Infection and Immunity, University of Melbour
 Clockor2 has three key dependencies for handling, and plotting trees and RTT data. Trees are handled and manipulated using the phylotree.js library \citep{shank_phylotreejs_2018}. Phylocanvas is used to viaualise trees and plotly.js is used to plot RTT data \citep{abudahab_phylocanvasgl_2021}.
 
 \subsection*{General model for global and local strict clocks}
+\begin{figure}[H]
+\centering
+\includegraphics[1\linewidth]{figures/egRTT}
+\caption{Example RTT}
+\label{fig:egRTT}
+\end{figure}
+
 Root to tip regression models strict evolutionary rates as the slope of a linear regression between tip heights and their sampling dates. If we denote the evolutionary rate as $r$ (usually in units of $subs/site/time$), tip heights as $h$ (usually in units of $subs/site$), $o$ as the intercept (interpreted as origin), and sampling times as $t$, then the model is:
 \begin{equation*}
     h = rt + o + \epsilon
@@ -77,7 +84,7 @@ $R^2$ values for each clock are then an indication of clock-like behaviour with 
 TODO: Point about statistical non-independence of samples
 
 \subsection*{Algorithm for local clock search}
-Where it is hypothesised that a datasset contains local clocks, clockor2 provides functionality to corroborate this hypothesis by performing a search for local clocks in the tree. Briefly, the algorithm takes a maximum number of clocks and a minimum group size for each local clock as input parameters. It then iterates through all combinations of internal nodes from which local clocks can descend to induce  configuration of local clocks satisfying the maximum number of local clocks and minimum group size. Importantly, the clock search algorithm test for a number of clocks up to an including the maximum number so that more parsimonious configurations with fewer clocks may be found. Configurations are compared using the information criteria outlined above. Again, we reccommend the BIC as it penalises additional parameters (ie. additional local clocks) most heavily. See \href{https://github.com/LeoFeatherstone/clockor2Paper/blob/main/algoEg2Clocks.gif}{here for an animation} of the clock search algorithm. (TODO: must update gif) 
+Where it is hypothesised that a datasset contains local clocks, clockor2 provides functionality to corroborate this hypothesis by performing a search for local clocks in the tree. Briefly, the algorithm takes a maximum number of clocks and a minimum group size for each local clock as input parameters. It then iterates through all combinations of internal nodes from which local clocks can descend to induce  configuration of local clocks satisfying the maximum number of local clocks and minimum group size. Importantly, the clock search algorithm test for a number of clocks up to an including the maximum number so that more parsimonious configurations with fewer clocks may be found. Configurations are compared using the information criteria outlined above. Again, we reccommend the BIC as it penalises additional parameters (ie. additional local clocks) most heavily. See \href{https://github.com/LeoFeatherstone/clockor2Paper/blob/main/figures/clockSearchEg2Clocks.gif}{here for an animation} of the clock search algorithm. (TODO: must update gif) 
 
 We stress that this algirithm is intended to corroborate hypotheses about a particular local clock configuration, but is not at all indended to be performed as a blind search. This is beause it is highly prone to overfitting, as oulined later in the results section.
 
@@ -88,6 +95,15 @@ Clockor2 selects the best fitting root based on the $R^2$ of a global clock mode
 The best fiting root is inferred using a single, global clock because this presents the most parsimonious model of the evolutionary rate for a given tree. The fit of more elaborate local clock models can then be compared to this using information criteria and/or comparing the $R^2$ values of each model. Clockor2 has no concept of calcuating a best fitting root with respect to a local clock model.
 
 \section*{Results}
+\begin{figure}[H]
+\centering
+\includegraphics[\linewidth]{figures/inferredClocks.pdf}
+\caption{Counts of the number of inferred clocks against the maximum number of clocks allowed by each search. Each plot corresponds to simulated data with either a rate increase along only the stem leading to a clade, or with the rate increase continuing in the clade. The true value is 2 and accuracy decreases as the maximum number of clocks allowed by the clockSearch() algorithm increases.}
+\label{fig:simStudy}
+\end{figure}
+
+
+
 - Include results about speed and accuracy of IC based model selection. Perhaps some RoC cuves?
 - Include point about being able to handle trees of $10^5$ tips (phylocanvas anyway). Time this once we get web-workers happening for the BFR.
 
