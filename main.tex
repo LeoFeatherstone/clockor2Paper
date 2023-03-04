@@ -52,9 +52,9 @@ $^{1}$ Peter Doherty Institute for Infection and Immunity, University of Melbour
 Clockor2 has three key dependencies for handling, and plotting trees and RTT data. Trees are handled and manipulated using the phylotree.js library \citep{shank_phylotreejs_2018}. Phylocanvas is used to viaualise trees and plotly.js is used to plot RTT data \citep{abudahab_phylocanvasgl_2021}.
 
 \subsection*{General model for global and local strict clocks}
-Root to tip regression models strict evolutionary rates as the slope of a linear regression between tip heights and their sampling dates. If we denote the evolutionary rate as $r$ (usually in units of $subs/site/time$), tip heights as $h$ (usually in units of $subs/site$), and sampling times as $t$, then the model is:
+Root to tip regression models strict evolutionary rates as the slope of a linear regression between tip heights and their sampling dates. If we denote the evolutionary rate as $r$ (usually in units of $subs/site/time$), tip heights as $h$ (usually in units of $subs/site$), $o$ as the intercept (interpreted as origin), and sampling times as $t$, then the model is:
 \begin{equation*}
-    h = rt + \epsilon
+    h = rt + o + \epsilon
 \end{equation*}
 where epsilon is the error term.
 
@@ -62,8 +62,8 @@ Clockor2 uses a generalisation of this model to accommodate local clocks. For a 
 \begin{equation*}
     h = 
     \begin{cases}$
-    $r_{1}t + \epsilon, \textnormal{ if tip }\in g_1$\\
-    $r_{2}t + \epsilon, \textnormal{ if tip }\in g_2$
+    $r_{1}t + o + \epsilon, \textnormal{ if tip }\in g_1$\\
+    $r_{2}t + o + \epsilon, \textnormal{ if tip }\in g_2$
     $
     \end{cases}
 \end{equation*}
