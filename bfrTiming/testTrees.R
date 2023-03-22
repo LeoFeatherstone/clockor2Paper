@@ -22,8 +22,16 @@ for (i in seq_along(trees)) {
 }
 
 # record times
+# on linux machine
 time <- data.frame(
     nTips =        c(100,      500,     1000,      5000,    10000),
     clockor2Time = c("0.47", "2.609", "7.819" , "235.979",   "1121.833"    ),
     tempestTime  = c("< 1",   "1.52",  "5.51",    "166.33", "820.0")
+)
+
+# on mac M1
+time <- data.frame(
+    nTips =        c(100,      500,     1000,      5000,    10000),
+    clockor2Time = c("1.239",  "1.70", "4.43",    "95.26",      "422.11"),
+    tempestTime  = c("",  "2.40", "",    "",      "1310.34")
 )
