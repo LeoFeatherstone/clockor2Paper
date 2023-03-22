@@ -38,7 +38,7 @@ Specifically, clockor2 allows users to perform RTT regression for fitting global
 
 \begin{figure}[H]
 \centering
-\includegraphics[0.75\linewidth]{figures/egRTT}
+\includegraphics[width = 0.75\linewidth]{figures/egRTT}
 \caption{Simulated examples of how local clocks may manifest in trees and RTT regression data. (\textbf{A}) RTT regression data for two local clocks with similar rates separated by a long branch. (\textbf{B})
 A tree characteristic of two similar local clock rates separated by a long branch. (\textbf{C}) RTT regression data where two local clocks have differing evolutionary rates. (\textbf{D}) A tree characteristic of two local clocks with differing rates.}
 \label{fig:egRTT}
@@ -54,10 +54,10 @@ where epsilon is an error term.
 Clockor2 uses a generalisation of this model to accommodate local clocks. For a given tree with a set of tips $T$, we define local clocks as pertaining to \textit{groups} of tips $g_i$ and a rate parameter for each ($r_i$). For a strict clock model with two local clocks, we then write:
 \begin{equation*}
     d = 
-    \begin{cases}$
-    $r_{1}t + o + \epsilon, \textnormal{ if tip }\in g_1$\\
-    $r_{2}t + o + \epsilon, \textnormal{ if tip }\in g_2$
-    $
+    \begin{cases}
+    r_{1}t + o + \epsilon, \textnormal{ if tip }\in g_1\\
+    r_{2}t + o + \epsilon, \textnormal{ if tip }\in g_2
+    
     \end{cases}
 \end{equation*}
 
@@ -114,7 +114,7 @@ Clockor2 can process trees of up to $10^5$ tips. Finding the best fitting root a
 \subsection*{clock-search accuracy}
 \begin{figure}[H]
 \centering
-\includegraphics[\linewidth]{figures/inferredClocks.pdf}
+\includegraphics[width = \linewidth]{figures/inferredClocks.pdf}
 \caption{Counts of the number of inferred clocks against the maximum number of clocks allowed by each search. "stem" and "stem+clade" refer to either a rate increase along only the stem of a clade, or with the rate increase continuing in the clade. The true value is 2 and accuracy decreases as the maximum number of clocks allowed by the clock-search algorithm increases.}
 \label{fig:simStudy}
 \end{figure}
@@ -124,12 +124,12 @@ For clock searches with a maximum number of 2 clocks, the clock-search algorithm
 To this end, we again emphasise that the clock-search algorithm is only intended to be used as a tool testing a number of clocks up to and including the hypothesised number, but never more. It should never be used to blindly search for local clocks in the absence of a biological hypothesis. For example, to demonstrate intended use we used the clock search with a minimum group size of X and max number of clocks of 2 to test for the presence of two local clocks in SARS-CoV-2 data taken from human and mink hosts in \citet{porter2023evolutionary}. We found that the clock search supported the presence of two clocks dividing mink samples from the Netherlands and the rest of the data, supporting the inference of a second clock for mink hosts. Conversely, improper use would be searching for a number of clocks above the biologically-informed hypothesis of 2 local clocks.
 
 \section*{Discussion}
-Clockor2 provides a flexible and scalable front-end web based RTT regression platform. Its extension to fitting local clocks allows it to accommodate the growing complexity of phylodyanmic datasets as genomic epidemiology is increasingly relied upon. 
+Clockor2 provides a flexible and scalable front-end web based RTT regression platform. Its extension to fitting local clocks allows it to accommodate the growing complexity of phylodyanmic datasets as genomic epidemiology plays a growing role in infectious disease surveillance. 
 
-As a front end application, clockor2 is also highly accessible with no installation steps required, although users have option of saving the site to run locally. Wherever there is a browser, it is possible to conduct an RTT regression using clockor2. 
+As a front end application, clockor2 is also highly accessible with no installation steps required, although users have option of saving the site to run locally. Wherever there is a browser, it is possible to conduct an RTT regression using clockor2 with the data never leaving the user's computer.
 
 \subsection*{Future Directions}
-As a front-end web application, it will in the future be possible to re-implement core functionality in increasingly popular and highly efficient programming languages, such as Rust, that can compile to Web-Assembly format. As the bioinformatics ecosystem in Rust continues to develop, it will be possible to further improve the efficiency of clockor2 using packages such as Bio-Rust \citep{koester_rust-bio-2015}.
+In the fiture it will be possible to re-implement core functionality in increasingly popular and highly efficient programming languages, that can compile to Web-Assembly format. For example, as the bioinformatics ecosystem in Rust continues to develop, it will be possible to further improve the efficiency of clockor2 using packages such as Bio-Rust \citep{koester_rust-bio-2015}.
 
 %Finally, as phylodynamics datasets continue to diversify, the value of effective and simple models will increase. While RTT is of time proven value as a simple and effective way of fitting strict clocks, future methods could include generalised linear modelling to accommodate different assumptions about the distribution of mutations over time as well as pariwise comparison of tips to eliminate the flawed assumption of independent sampling in RTT.
 
