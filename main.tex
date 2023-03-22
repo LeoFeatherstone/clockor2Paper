@@ -101,12 +101,13 @@ Clockor2 can process trees of up to $10^5$ tips. Finding the best fitting root a
     \centering
     \begin{tabular}{c|c|c}
         Tips & clockor2 & TempEst \\
-        100 &   & \\
-        500 &   & \\
-        1000 &   & \\
-        5000 &   & \\
+        100 & $<$ 1  & $<$ 1  \\
+        500 & 2.61 & 1.52   \\
+        1000 & 7.82  & 5.51 \\
+        5000 &  235.98 & 166.33 \\
+        10000 &  1121.83 & 820.00   \\
     \end{tabular}
-    \caption{Time taken to find the best fitting root for test trees of 100, 500, 1000, and 5000 tips using clockor2 and TempEst.}
+    \caption{Time taken to find the best fitting root for test trees of 100, 500, 1000, and 5000 tips using clockor2 and TempEst using chromium on an intel i7 processor. Times vary with computer specs and browser, with clockor2 performing faster on M1 apple.}
     \label{tab:bfr}
 \end{table}
 
@@ -137,9 +138,5 @@ All code required to replicate the simulation study and figures in the paper is 
 
 \bibliography{clockor2}
 
-\section*{Supplementary Material}
-- To Add:
-- Derivations for AIC, AICc, and BIC for general strict clock models
-- Proof of polynomial time for clockSearch() algorithm.
 
 \end{document}
