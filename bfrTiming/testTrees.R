@@ -22,7 +22,10 @@ for (i in seq_along(trees)) {
 }
 
 # record times
-# on linux machine
+
+# on Lenovo Thinkpad with 11th Gen intel i7 processor
+# TempEst v1.5.3
+# chromium v111.0.5563.64
 time <- data.frame(
     nTips =        c(100,      500,     1000,      5000,    10000),
     clockor2Time = c("0.47", "2.609", "7.819" , "235.979",   "1121.833"    ),
