@@ -30,8 +30,10 @@ time <- data.frame(
 )
 
 # on mac M1
+# chrome v 110.5481.177
+# tempest v1.5.3
 time <- data.frame(
     nTips =        c(100,      500,     1000,      5000,    10000),
-    clockor2Time = c("1.239",  "1.70", "4.43",    "95.26",      "422.11"),
-    tempestTime  = c("",  "2.40", "",    "",      "1310.34")
+    clockor2Time = c("1.239",  "1.70", "4.43",    "95.26",  "422.11"),
+    tempestTime  = c("<1s",    "2.40", "10.28",  "272.29", "1310.34")
 )
