@@ -6,24 +6,28 @@
 
 \maketitle
 \begin{centering}
-Leo A. Featherstone$^{\ast,1}$, Sebastian Duchene$^1$, Wytamma Wirth$^{1}$\\
+Leo A. Featherstone$^{\ast,1}$, Sebastian Duchene$^{\dagger,1}$, Wytamma Wirth$^{\dagger,1}$\\
 $^{1}$ Peter Doherty Institute for Infection and Immunity, University of Melbourne, Australia.\\
+
 *email: leo.featherstone@unimelb.edu.au
 \end{centering}
 
+$^{\dagger}$ These authors supervised this work equally.
+
+
 \section*{Abstract}
-We introduce clockor2, a client-side web application for conducting root-to-tip (RTT) regression  - the fastest and most widely used method to calibrate strict molecular clocks. Clockor2 also uniquely allows users to quickly fit local molecular clocks using RTT regression, thus handling the increasing complexity of phylodynamic datasets that sample beyond the assumption homogeneous host populations into other postulations and species. Clockor2 is efficient, handling trees of up to $10^5$ tips, with significant speed increases compared to other RTT regression applications. Although clockor2 is written as a web application, all data processing happens on the client-side, meaning that data never leaves the user's computer. Clockor2 is freely available at \url{https://clockor2.github.io/}.
+Molecular sequenced data from rapidly evolving organisms are often sampled at different points in time. Sampling times can then be used for molecular clock calibration. The root-to-tip (RTT) regression is an essential tool to assess the degree to which the data are amenable to such analyses and behave in a clock-like fashion. Here, we introduce clockor2, a client-side web application for conducting RTT regression. Clockor2 uniquely allows users to quickly fit local and global molecular clocks, thus handling the increasing complexity of genomic datasets that sample beyond the assumption homogeneous host populations. Clockor2 is efficient, handling trees of up to $10^5$ tips, with significant speed increases compared to other RTT regression applications. Although clockor2 is written as a web application, all data processing happens on the client-side, meaning that data never leaves the user's computer. Clockor2 is freely available at \url{https://clockor2.github.io/}.
 
 \textbf{Keywords:} Molecular clock, evolutionary rate heterogeneity, root-to-tip regression.
 
 \section*{Introduction}
-Phylodynamic analyses make use of genetic sequence data to understand the evolution and epidemiological (or ecological) dynamics of a pathogen. Importantly, phyodynamics achieves its greatest value when generating insight about infectious disease dynamics outside the purview of epidemiology. This frequently occurs at population interfaces, such as during transmission across host sub-populations,  geographical boundaries or host species. The essential component to all phylodynamic modelling is always the assumption of a molecular clock relating epidemiological and evolution.
+Phylodynamic analyses make use of genetic sequence data to understand the evolution and epidemiological (or ecological) dynamics of a pathogen. Importantly, phyodynamics achieves its greatest value when generating insight about infectious disease dynamics outside the purview of epidemiology. This frequently occurs at population interfaces, such as during transmission across host sub-populations,  geographical boundaries or host species. The essential component to all phylodynamic modelling is always the assumption of a molecular clock relating epidemiology and evolution.
 
-The simplest molecular clock model is the strict clock, which assumes a constant rate of substitution per unit time. When the substitution rate is constant throughout a phylogenetic tree, the term global molecular clock is used. In contrast, local strict clocks refers to the situation where different substitution rates apply to different monophyletic groups within a tree \citep{ho2014molecular}. Local clocks are sometimes referred to as 'foreground' rates while the most ancestral clock is termed the "background" rate \citep{yoder2000estimation}. The assumption of a local clock may for example reflect samples from different host populations, host species, or pathogen lineages \citep{worobey_synchronized_2014}. For example, clockor2 includes a default example from \citet{porter2023evolutionary}, where local clocks are fit to human and min SARS-CoV-2 host populations. Clockor2 enables rapid inference of global and local strict molecular clocks from phylogenetic trees where tips are annotated with sampling times, using root-to-tip regression (RTT). Several other tools allow for the inference of strict molecular clocks via RTT, but none readily offer the ability to fit local clocks models \citep{rambaut_exploring_2016, hadfield_nextstrain_2018,sagulenko_treetime_2018,volz_scalable_2017}. 
+The simplest molecular clock model is the strict clock, which assumes a constant rate of substitution per unit time, known as the 'evolutionary rate'. When the evolutionary rate is constant throughout a phylogenetic tree, the term global molecular clock is used. In contrast, a local strict clock refers to the situation where different substitution rates apply to different monophyletic groups within a tree \citep{ho2014molecular}. The branches of local clocks are sometimes referred to as 'foreground' while the remaining branches are known as the 'background' \citep{yoder2000estimation}. The assumption of a local clock may for example reflect samples from different host populations, host species, or pathogen lineages \citep{worobey_synchronized_2014}. For example, clockor2 includes a default example from \citet{porter2023evolutionary}, where local clocks are fit to human and mink SARS-CoV-2 host populations. Clockor2 enables rapid inference of global and local strict molecular clocks from phylogenetic trees where tips are annotated with sampling times, using root-to-tip regression (RTT). Several other tools allow for the inference of strict molecular clocks via RTT, but none readily offer the ability to fit local clocks models \citep{rambaut_exploring_2016, hadfield_nextstrain_2018,sagulenko_treetime_2018,volz_scalable_2017}. 
 
-Phylodynamic datasets are and will continue to grow in size and scope \cite{featherstone2022epidemiological}. For example, datasets of thousands to tens-of-thousands have been used to understand the spread of SARS-CoV-2 at national and international scales, as well as study the emergence of variants of concern (VOC), and transmission to other species \citep{du_plessis_establishment_2021,hill_origins_2022,nadeau_swiss_2023,porter2023evolutionary}. Larger datasets, as a function of their size, are more likely to sample form increasingly distinct populations, meaning that local clocks will become increasingly important. Currently, testing the fit of a local clock over alternative models, such as global or relaxed clocks, frequently requires intensive computational  efforts using common bayesian phylodynamic applications such as BEAST or RevBayes, each requiring hours to days of computational time \citep{bouckaert_beast_2019, suchard_bayesian_2018, hoehna_2016_revbayes}. Clockor2 uniquely offers a scalable and accessible client-side web application to perform the same function, with results available in seconds to minutes to inform subsequent phylodynamic analysis.
+Phylodynamic datasets are and will continue to grow in size and scope \cite{featherstone2022epidemiological}. For example, datasets of thousands to tens-of-thousands have been used to understand the spread of SARS-CoV-2 at national and international scales, as well as study the emergence of variants of concern (VOC), and transmission to other species \citep{du_plessis_establishment_2021,hill_origins_2022,nadeau_swiss_2023,porter2023evolutionary}. Larger datasets, as a function of their size, are more likely to be sampled from increasingly distinct populations, meaning that local clocks will become increasingly important. Currently, testing the fit of a local clock over alternative models, such as global or relaxed clocks, frequently requires intensive computational efforts using common Bayesian phylodynamic applications such as BEAST or RevBayes \citep{bouckaert_beast_2019, suchard_bayesian_2018, hoehna_2016_revbayes}, each requiring hours to days of computational time. Clockor2 uniquely offers a scalable and accessible client-side web application to perform the same function, with results available in seconds to minutes to inform subsequent phylodynamic analysis.
 
-Specifically, clockor2 allows users to perform RTT regression for fitting global and local clocks. The user begins by dropping or importing a newick tree. Sampling dates and group identifiers can be parsed from tip labels or separate files on input. Like other RTT regression applications, clockor2 also allows users to infer the best fitting root based on the $R^2$ value of the RTT, a key indicator of clock-like evolution. It also offers users a local clock-search function to test assumptions about local clocks in a dataset. 
+Specifically, clockor2 allows users to perform RTT regression for fitting global and local clocks. The user begins by dropping or importing a newick tree. Sampling dates and group identifiers can be parsed from tip labels or separate files on input. Like other RTT regression applications, clockor2 also allows users to infer the best fitting root based on the $R^2$ value of the RTT regression, a key indicator of clock-like evolution. It also offers users a local clock-search function to test assumptions about local clocks in a dataset. 
 
 \begin{figure}[H]
 \centering
@@ -40,12 +44,12 @@ Specifically, clockor2 allows users to perform RTT regression for fitting global
 \centering
 \includegraphics[width = 0.75\linewidth]{figures/egRTT}
 \caption{Simulated examples of how local clocks may manifest in trees and RTT regression data. (\textbf{A}) RTT regression data for two local clocks with similar rates separated by a long branch. (\textbf{B})
-A tree characteristic of two similar local clock rates separated by a long branch. (\textbf{C}) RTT regression data where two local clocks have differing evolutionary rates. (\textbf{D}) A tree characteristic of two local clocks with differing rates.}
+A tree characteristic of two similar local clock rates separated by a long branch. (\textbf{C}) RTT regression data where two local clocks have different evolutionary rates. (\textbf{D}) A tree characteristic of two local clocks with different rates.}
 \label{fig:egRTT}
 \end{figure}
 
 \subsection*{General model for global and local strict clocks}
-RTT regression consists in modelling the substitution rate as the slope of a linear regression between distance from the root to each tip, typically in units of substitutions per site (subs/site), and the sampling date of each tip. If we denote the evolutionary rate as $r$ (usually in units of $subs/site/time$), root-to-tip distance as $d$ (usually in units of $subs/site$), $o$ as the intercept (interpreted as origin), and sampling times as $t$, then the model for a global strict clock takes the form:
+RTT regression consists in modelling the evolutionary rate as the slope of a linear regression between distance from the root to each tip (i.e. RTT), typically in units of substitutions per site (subs/site), and the sampling date of each tip. If we denote the evolutionary rate as $r$ (usually in units of $subs/site/time$), RTT distance as $d$ (usually in units of $subs/site$), $o$ as the intercept (interpreted as origin), and sampling times as $t$, then the model for a global strict clock takes the form:
 \begin{equation*}
     d = rt + o + \epsilon
 \end{equation*}
@@ -61,7 +65,7 @@ Clockor2 uses a generalisation of this model to accommodate local clocks. For a 
     \end{cases}
 \end{equation*}
 
-We refer to \emph{groups} instead of \emph{clades} because while  collections of tips belonging to one local clock necessarily share a common ancestor, they do not necessarily comprise a whole clade. This occurs when two or more local clocks are nested. The tips comprising the outer clock(s) cannot comprise a whole clade if another local clock is nested within it. For example, local clock 1 in Fig. \ref{fig:egRTT} B,D does not comprise a clade (i.e. is not monophyletic) because local clock 2 is nested within it.
+We refer to \emph{groups} instead of \emph{clades} because while collections of tips belonging to one local clock necessarily share a common ancestor, they do not necessarily comprise a whole clade. This occurs when two or more local clocks are nested. The tips comprising the outer clock(s) cannot comprise a whole clade if another local clock is nested within it. For example, local clock 1 in Fig. \ref{fig:egRTT} B,D does not comprise a clade (i.e. is not monophyletic) because local clock 2 is nested within it.
 
 This general model then captures two key scenarios where local clocks may be appropriate. The first is where rates are similar between local clocks, but separated by a long branch (Fig. \ref{fig:egRTT}A-B). For example, in the evolution of VOCs in SARS-CoV-2 or due to temporally-sparse sampling in the case of ancient \textit{Yersisnia pestis} samples \citet{tay2022emergence, eaton2023plagued}.The second scenario is where rates differ between local clocks (Fig \ref{fig:egRTT} C-D). For example, this can occur when a pathogen spreads in different host species, such as has been observed for SARS-CoV-2 in mink and human hosts \citep{porter2023evolutionary}.
 
@@ -69,45 +73,42 @@ For each group of tips defining a local clock, we independently conduct a RTT re
 
 Local clock and or global clock configurations can then be compared using an information criterion that combines the likelihood of each local clock's RTT regression while penalising the number of inferred parameters (three for each clock - slope, intercept, and variance). Clockor2 allows users to use either the Bayesian Information Cirterion (BIC), Aikake Information Criterion (AIC), or corrected Aikake Information Cirterion (AICc). We recommend using the BIC because it most heavily penalises the addition of extra parameters, and local clocks in turn.
 
-Derivations of the above information criteria for the local clock model are given in the supplementary methods. Briefly, these exploit the assumption of independent sampling to factor the likelihood across local clocks. Note however that the assumption of independent sampling is flawed because samples necessarily share some ancestry by the assumption of a phylogenetic tree. In other words, ancestral branches are counted over many times in the calculating the distance from root to tip for each sample. This is a limitation of the RTT regression approach more broadly, rather than clockor2 itself.
+Derivations of the above information criteria for the local clock model are given in the supplementary methods. Briefly, these exploit the assumption of independent sampling to factor the likelihood across local clocks. Note however that the assumption of independent sampling is flawed because samples necessarily share some ancestry by the assumption of a phylogenetic tree. In other words, ancestral branches are counted over many times in the calculating the distance from root to tip for each sample. However, this is a limitation of the RTT regression approach more broadly, rather than clockor2 itself.
 
 
 \subsection*{Algorithm for local clock search}
 Where it is hypothesised that a datasset contains local clocks, clockor2 provides functionality to corroborate the this hypothesis by performing a search for local clocks in the tree. Briefly, the algorithm takes a maximum number of clocks and a minimum number of tips (group size) for each local clock as input parameters. It then iterates through all combinations of internal nodes from which local clocks can descend to induce corresponding local clock configurations. Importantly, the clock search algorithm tests for a number of clocks up to and including the maximum number so that more parsimonious configurations with fewer clocks may be found. Configurations are compared using the information criteria outlined above. Again, we recommend the BIC as it penalises additional parameters (ie. additional local clocks) most heavily. See \href{https://github.com/LeoFeatherstone/clockor2Paper/blob/main/figures/clockSearchEg2Clocks.gif}{here for an animation} of the clock search algorithm. 
 
-We stress that this algorithm is intended to corroborate hypotheses about a particular local clock configuration, but is not at all intended to be performed as a blind search for local clocks. This is because it is highly prone to over-fitting where the maximum number of clocks is inflated, as outlined later in the results section.
+We stress that this algorithm is intended to corroborate hypotheses about a particular local clock configuration, but is not intended to be performed as a blind search for local clocks. This is because it is highly prone to over-fitting where the maximum number of clocks is inflated, as outlined later in the results section.
 
 The clock-search algorithm operates in polynomial time (see supplementary material). Efficiency is improved by reducing the maximum number of local clocks in the search, increasing the minimum group size, and contingent on the topology of the underlying tree. However, the former two parameters exert a far greater effect on efficiency than topology.
 
-\subsubsection*{clock-search algorithm simulation study}
+\subsubsection*{Clock-search algorithm simulation study}
 We conducted a simulation study to test the accuracy of the clock-search algorithm. We started with a core set of 100 simulated trees of 250 tips and added a local clock descending from a randomly selected node such that it would contain between 50 and 150 tips. For each, we simulated a 5-fold rate increase occurring in either the stem branch leading to the group/clade, or throughout the group. These scenarios are characterised in  Fig \ref{fig:egRTT} C,D respectively. For each of the resulting 200 trees, we applied the clock search algorithm with a minimum group size of 50 tips and a maximum number of of 2-5 clocks. The case of a maximum of 2 clocks tests for baseline accuracy where search parameters match reality. Searches with a maximum of 3-5 clocks test for over-sensitivity in the algorithm where the maximum number of clocks is inflated. All clock-search tests use the BIC.
-
 
 \subsection*{Finding the Best Fitting Root}
 Clockor2 selects the best fitting root based on the $R^2$ of a global clock model for the input tree. It follows the same algorithm as implemented in Tempest \citet{rambaut_exploring_2016}, but makes use of parallelisation to improve speed for larger trees. Briefly, the tree is rooted along the branch leading to each internal node or tip, an RTT regression is performed, and the root leading to the highest $R^2$ value is selected. When rooting along a branch of length greater than $10^{-8}$, clockor2 starts at the midpoint and then optimises the root position using the golden-search-section algorithm. Shorter branches are assumed to be effectively zero length, and hence there is no need to optimise the position of the root locally.
 
-The best fiting root is inferred using a single, global clock because this presents the most parsimonious model of the evolutionary rate for a given tree. The fit of more elaborate local clock models can then be compared to this using information criteria and/or comparing the $R^2$ values of each model. Clockor2 does not find the best fitting root for local clock models because the search space of best fitting roots and local clock configuration quickly becomes prohibitive.
+The best fitting root is inferred using a single, global clock because this presents the most parsimonious model of the evolutionary rate for a given tree. The fit of more elaborate local clock models can then be compared to this using information criteria and/or comparing the $R^2$ values of each model. Clockor2 does not find the best fitting root for local clock models because the search space of best fitting roots and local clock configuration quickly becomes prohibitive and is possibly unidentifiable.
 
 \subsection*{Dependencies}
 Clockor2 has three key dependencies for handling, and plotting trees and RTT data. Trees are handled and manipulated using the phylotree.js library \citep{shank_phylotreejs_2018}. Phylocanvas is used to viaualise trees and plotly.js is used to plot RTT data \citep{abudahab_phylocanvasgl_2021}.
 
-
-
 \section*{Results}
 \subsection*{Efficiency}
-Clockor2 can process trees of up to $10^5$ tips. Finding the best fitting root and the clock-search algorithms make use of parallelisation to increase speed relative to similar RTT tools. Speedup is proportional to the number of threads or cores available. For example, on a 2021 mackbook pro with 16Gb of ram, it took... \textcolor{red}{INSERT STATS ON SPEED OF BFR & CLOCK-SEARCH ONCE BUGS ARE IRONED OUT. MAYBE INCLUDE TABLE OF COMPARISONS TIMES OT TEMPEST} (Table \ref{tab:bfr})
+Clockor2 can process trees of up to $10^5$ tips. Finding the best fitting root makes use of parallelisation to increase speed. Speedup is therefore proportional to the number of threads or cores available, in addition to the chose of browser and computer. For example, on trees of 500-10000 tips, clockor2 is faster than TempEst v 1.5.3 a 2021 mackbook pro with 16Gb of ram running chrome v110.5481.177, (Table \ref{tab:bfr}). However, we found it to be comparable or slower on other combinations of processor and browser.
 
 \begin{table}[H]
     \centering
     \begin{tabular}{c|c|c}
-        Tips & clockor2 & TempEst \\
-        100 & $<$ 1  & $<$ 1  \\
-        500 & 2.61 & 1.52   \\
-        1000 & 7.82  & 5.51 \\
-        5000 &  235.98 & 166.33 \\
-        10000 &  1121.83 & 820.00   \\
+        Tips    & clockor2  & TempEst   \\
+        100     & 1.24     & $<$ 1     \\
+        500     & 1.70      & 2.40      \\
+        1000    & 4.43      & 10.28      \\
+        5000    &  95.26   & 272.29   \\
+        10000   &  422.11  & 1310.34    \\
     \end{tabular}
-    \caption{Time taken to find the best fitting root for test trees of 100, 500, 1000, and 5000 tips using clockor2 and TempEst using chromium on an intel i7 processor. Times vary with computer specs and browser, with clockor2 performing faster on M1 apple.}
+    \caption{Time taken to find the best fitting root for test trees of 100, 500, 1000, and 5000 tips using clockor2 and TempEst v1.5.3 using chrome v 110.5481.177 on a 2021 M1 MacBook. Times vary with computer and browser.}
     \label{tab:bfr}
 \end{table}
 
@@ -129,7 +130,7 @@ Clockor2 provides a flexible and scalable front-end web based RTT regression pla
 As a front end application, clockor2 is also highly accessible with no installation steps required, although users have option of saving the site to run locally. Wherever there is a browser, it is possible to conduct an RTT regression using clockor2 with the data never leaving the user's computer.
 
 \subsection*{Future Directions}
-In the fiture it will be possible to re-implement core functionality in increasingly popular and highly efficient programming languages, that can compile to Web-Assembly format. For example, as the bioinformatics ecosystem in Rust continues to develop, it will be possible to further improve the efficiency of clockor2 using packages such as Bio-Rust \citep{koester_rust-bio-2015}.
+In the future it will be possible to re-implement core functionality in increasingly popular and highly efficient programming languages, that can compile to Web-Assembly format. For example, as the bioinformatics ecosystem in Rust continues to develop, it will be possible to further improve the efficiency of clockor2 using packages such as Bio-Rust \citep{koester_rust-bio-2015}.
 
 %Finally, as phylodynamics datasets continue to diversify, the value of effective and simple models will increase. While RTT is of time proven value as a simple and effective way of fitting strict clocks, future methods could include generalised linear modelling to accommodate different assumptions about the distribution of mutations over time as well as pariwise comparison of tips to eliminate the flawed assumption of independent sampling in RTT.
 
