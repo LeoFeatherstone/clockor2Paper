@@ -1,4 +1,4 @@
-###############################################S################################
+################################################################################
 ################################################################################
 ######################### Simulation Study for clockSearch() ###################
 ################################################################################
@@ -9,8 +9,9 @@ library(TreeSim)
 library(NELSI)
 library(tidyverse)
 library(ggplot2)
+library(latex2exp)
 
-setwd(paste0(getwd(), "/clockSearchSimStudy/"))
+setwd("./clockSearchSimStudy/")
 
 ## Get random clade within a specified size. I.e. the min possible to half of the num tips.
 ## Returns vector of tips comprising clade
@@ -113,7 +114,8 @@ testClockSearch <- function(maxClocks, testTrees, baseTrees, trueClades) {
   for (i in seq_along(baseTrees)){
     cmd <- paste0("'", write.tree(testTrees[[i]]), "' ", 50, ' ', maxClocks)
     op <- system(
-      paste('node ./clockSearchWrapper.js', cmd), 
+      # Enter node path
+      paste('$(NODE_PATH) ./clockSearchWrapper.js', cmd), 
       intern = TRUE
     )
     
@@ -171,13 +173,12 @@ data = bind_rows(
   data, 
   .id="type"
   )
-save(data, trees, clades, stem, stemClade, file = "simStudyData.Rdata")
+save(data, trees, clades, stem, stemClade, file = "simStudyData.RData")
 
 ############################################################################
 ###################### Results and Figures below ###########################
 ############################################################################
-load("./simStudyData.Rdata")
-library(latex2exp)
+load("./simStudyData.RData")
 
 ### Sim Study Figures
 data %>% 

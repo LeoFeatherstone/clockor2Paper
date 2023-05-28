@@ -1,5 +1,5 @@
 import  { clockSearch } from "../../clockor2/src/features/engine/clockSearch"
-import  { phylotree }  from "phylotree"
+import  { readNewick }  from "phylojs"
 const fs = require("fs")
 
 var nwk: string = process.argv[2]
@@ -7,10 +7,9 @@ var minCladeSize: number = Number(process.argv[3])
 var maxNumClocks: number = Number(process.argv[4])
 var dates: number[] = []
 
-dates = new phylotree(nwk).getTips().map(
-    (e: any) => e.data.name
-    ).map(
-        (e: string) => Number(e.split('_')[1])
+dates = readNewick(nwk).getTipLabels()
+    .map(
+        (e) => Number(e.split('_')[1])
     )
 
 var grp = clockSearch(
