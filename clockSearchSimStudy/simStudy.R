@@ -181,7 +181,7 @@ save(data, trees, clades, stem, stemClade, file = "simStudyData.RData")
 load("./simStudyData.RData")
 
 ### Sim Study Figures
-data %>% 
+data <- data %>% 
   group_by(
     type, 
     maxClocks, 
@@ -189,21 +189,29 @@ data %>%
   ) %>%
   summarise(
     n = n()
-  ) 
-data %>% ungroup()
+  )
+data <- data %>% ungroup()
 
-p <- ggplot(data) +
-  geom_bar(aes(x = maxClocks, fill = numGroups)) +
-  xlab("Maximum Clocks in clockSearch()") +
-  ylab("Count") +
+p <- ggplot(data, aes(maxClocks, numGroups, fill= n)) +
+  geom_tile() + 
+  geom_text(aes(label = n)) +
+  scale_fill_gradient(
+    low = "white",
+    high = "dodgerblue",
+    name = "Identified Clocks"
+  ) +
+  xlab("Maximum Clocks in Local Clock Search") +
+  ylab("Number of Clocks Inferred\n(Truth=2)") +
   facet_wrap(~type) +
-  scale_fill_brewer(
-    palette = "Set2", 
-    direction = 1,
-    "No. Clocks\nIdentified") +
-  theme_minimal() 
+  coord_fixed() +
+  theme_bw() +
+  theme(
+    legend.position = "none"
+  )
 
-pdf(file = "inferredClocks.pdf", 
+
+
+pdf(file = "../inferredClocks.pdf", 
   width = 6, 
   height = 3,
   useDingbats = F

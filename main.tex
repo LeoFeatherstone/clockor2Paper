@@ -29,18 +29,16 @@ Specifically, clockor2 allows users to perform RTT regression for fitting global
 
 \begin{figure}[H]
 \centering
-\includegraphics[width = 1\linewidth]{figures/clockor2UI.pdf}
-\caption{\textcolor{red}{Update once final UI in place. Placeholder for now.} The clockor2 user interface. (\textbf{A}) Users can parse dates and group information from tip labels or via importing. (\textbf{B}) Clockor2 presents the tree along size RTT regression data. Users can toggle between local and global clocks and alter the appearance of the tree.}
+\includegraphics[width = 1\linewidth]{clockor2UI.pdf}
+\caption{lockor2 presents the tree along size RTT regression data. Users can toggle between local and global clocks and alter the appearance of the tree.}
 \label{fig:ui}
 \end{figure}
-
-\textcolor{red}{INSERT FIGURE OF CLOCKOR2 USE ONCE FINAL UI IN PLACE}
 
 \section*{Methods}
 
 \begin{figure}[H]
 \centering
-\includegraphics[width = 0.75\linewidth]{figures/egRTT}
+\includegraphics[width = 0.75\linewidth]{egRTT}
 \caption{Simulated examples of how local clocks may manifest in trees and RTT regression data. (\textbf{A}) RTT regression data for two local clocks with similar rates separated by a long branch. (\textbf{B})
 A tree characteristic of two similar local clock rates separated by a long branch. (\textbf{C}) RTT regression data where two local clocks have different evolutionary rates. (\textbf{D}) A tree characteristic of two local clocks with different rates.}
 \label{fig:egRTT}
@@ -90,49 +88,51 @@ Clockor2 selects the best fitting root based on the $R^2$ of a global clock mode
 The best fitting root is inferred using a single, global clock because this presents the most parsimonious model of the evolutionary rate for a given tree. The fit of more elaborate local clock models can then be compared to this using information criteria and/or comparing the $R^2$ values of each model. Clockor2 does not find the best fitting root for local clock models because the search space of best fitting roots and local clock configuration quickly becomes prohibitive and is possibly unidentifiable.
 
 \subsection*{Dependencies}
-Clockor2 has three key dependencies for handling, and plotting trees and RTT data. Trees are handled and manipulated using the phylotree.js library \citep{shank_phylotreejs_2018}. Phylocanvas is used to viaualise trees and plotly.js is used to plot RTT data \citep{abudahab_phylocanvasgl_2021}.
+Clockor2 has three key dependencies for handling, and plotting trees and RTT data. Trees are handled and manipulated using the phylojs library \textcolor{red}{Cite preprint for phylojs?}. Phylocanvas is used to viaualise trees and plotly.js is used to plot RTT data \citep{abudahab_phylocanvasgl_2021}.
 
 \section*{Results}
 \subsection*{Efficiency}
-Clockor2 can process trees of up to $10^5$ tips. Finding the best fitting root makes use of parallelisation to increase speed. Speedup is therefore proportional to the number of threads or cores available, in addition to the chose of browser and computer. For example, on trees of 500-10000 tips, clockor2 is faster than TempEst v 1.5.3 a 2021 mackbook pro with 16Gb of ram running chrome v110.5481.177, (Table \ref{tab:bfr}). However, we found it to be comparable or slower on other combinations of processor and browser.
-
+Clockor2 can process trees of up to $10^5$ tips. Finding the best fitting root makes use of parallelisation to increase speed. Speedup is therefore proportional to the number of threads or cores available, in addition to the chose of browser and computer. For example, Clockor2 is faster than TempEst v 1.5.3 a 2021 Mackbook pro with 16Gb of memory and 8 cores running chrome v113.0.5627.126, (Table \ref{tab:bfr}). However, we found Clockor2 to be comporable or slower on other combinations of processor and browser. 
 \begin{table}[H]
     \centering
-    \begin{tabular}{c|c|c}
-        Tips    & clockor2  & TempEst   \\
-        100     & 1.24     & $<$ 1     \\
-        500     & 1.70      & 2.40      \\
-        1000    & 4.43      & 10.28      \\
-        5000    &  95.26   & 272.29   \\
-        10000   &  422.11  & 1310.34    \\
+    \begin{tabular}{|l|c|c|}
+    		\hline
+        Tips    & Clockor2  & TempEst   \\
+        \hline
+        100     & 0.26     & $<$ 1     \\
+        500     & 1.53      & 2.40      \\
+        1000    & 5.35      & 10.28      \\
+        5000    &  189.02   & 272.29   \\
+        10000   &  1082.63  & 1310.34    \\
+        \hline
     \end{tabular}
-    \caption{Time taken to find the best fitting root for test trees of 100, 500, 1000, and 5000 tips using clockor2 and TempEst v1.5.3 using chrome v 110.5481.177 on a 2021 M1 MacBook. Times vary with computer and browser.}
+    \caption{Time taken to find the best fitting root for test trees of 100, 500, 1000, and 5000 tips using Clockor2 and TempEst v1.5.3 on a 2021 Macbook woth 16Gb of memory and 8 cores running chrome v113.0.5627.126. Times vary with computer and browser. In general the relative efficieny of Clockor2 will inrease with the number of cores.}
     \label{tab:bfr}
 \end{table}
 
 \subsection*{clock-search accuracy}
 \begin{figure}[H]
 \centering
-\includegraphics[width = \linewidth]{figures/inferredClocks.pdf}
-\caption{Counts of the number of inferred clocks against the maximum number of clocks allowed by each search. "stem" and "stem+clade" refer to either a rate increase along only the stem of a clade, or with the rate increase continuing in the clade. The true value is 2 and accuracy decreases as the maximum number of clocks allowed by the clock-search algorithm increases.}
+\includegraphics[width = \linewidth]{inferredClocks.pdf}
+\caption{Confusion matrices comparing the number of inferred clocks against the maximum number of clocks allowed by each search, with a true number of 2 clocks in each search. "stem" and "stem+clade" refer to either a rate increase along only the stem of a clade, or with the rate increase continuing in the clade. The true value is 2 and accuracy decreases as the maximum number of clocks allowed by the clock-search algorithm increases. The colour of and number in each tile reflect the number of analyess out of 100 selecting the corresponding number of clocks.}
 \label{fig:simStudy}
 \end{figure}
 
-For clock searches with a maximum number of 2 clocks, the clock-search algorithm correctly identified 2 local clocks in the simulated data with complete accuracy (Fig. \ref{fig:simStudy}). However, when the algorithm was allowed to search for configurations with 3-5 clocks, only 13 and 17 analyses correctly recovered 2 clocks for the stem only and stem+clade rate increases respectively. Although we used the BIC, the most conservative information metric used in clockor2, the clock-search algorithm is clearly still highly prone to over-fitting local clock configurations to data where a higher number of clocks allows for tighter clusters of points in the RTT data to be found.
+For clock searches with a maximum number of 2 clocks, the clock-search algorithm correctly identified 2 local clocks in the simulated data with complete accuracy (Fig. \ref{fig:simStudy}). However, when the algorithm was allowed to search for configurations with 3-5 clocks, only 13 and 17 analyses correctly recovered 2 clocks for the stem only and stem+clade rate increases respectively. Although we used the BIC, the most conservative information metric used in Clockor2, the clock-search algorithm is clearly still highly prone to over-fitting local clock configurations to data where a higher number of clocks allows for tighter clusters of points in the RTT data to be found.
 
 To this end, we again emphasise that the clock-search algorithm is only intended to be used as a tool testing a number of clocks up to and including the hypothesised number, but never more. It should never be used to blindly search for local clocks in the absence of a biological hypothesis. For example, to demonstrate intended use we used the clock search with a minimum group size of X and max number of clocks of 2 to test for the presence of two local clocks in SARS-CoV-2 data taken from human and mink hosts in \citet{porter2023evolutionary}. We found that the clock search supported the presence of two clocks dividing mink samples from the Netherlands and the rest of the data, supporting the inference of a second clock for mink hosts. Conversely, improper use would be searching for a number of clocks above the biologically-informed hypothesis of 2 local clocks.
 
 \section*{Discussion}
 Clockor2 provides a flexible and scalable front-end web based RTT regression platform. Its extension to fitting local clocks allows it to accommodate the growing complexity of phylodyanmic datasets as genomic epidemiology plays a growing role in infectious disease surveillance. 
 
-As a front end application, clockor2 is also highly accessible with no installation steps required, although users have option of saving the site to run locally. Wherever there is a browser, it is possible to conduct an RTT regression using clockor2 with the data never leaving the user's computer.
+As a front end application, Clockor2 is also highly accessible with no installation steps required, although users have option of saving the site to run locally. Wherever there is a browser, it is possible to conduct an RTT regression using Clockor2 with the data never leaving the user's computer.
 
 \subsection*{Future Directions}
-In the future it will be possible to re-implement core functionality in increasingly popular and highly efficient programming languages, that can compile to Web-Assembly format. For example, as the bioinformatics ecosystem in Rust continues to develop, it will be possible to further improve the efficiency of clockor2 using packages such as Bio-Rust \citep{koester_rust-bio-2015}.
+In the future it will be possible to re-implement core functionality in increasingly popular and highly efficient programming languages, that can compile to Web-Assembly format. For example, as the bioinformatics ecosystem in Rust continues to develop, it will be possible to further improve the efficiency of Clockor2 using packages such as Bio-Rust \citep{koester_rust-bio-2015}.
 
 
 \section*{Data availability}
-All code required to replicate the simulation study and figures in the paper is available at \url{https://github.com/LeoFeatherstone/clockor2Paper}. The code for clockor2 is open source at \url{https://github.com/clockor2/clockor2}.
+All code required to replicate the simulation study and figures in the paper is available at \url{https://github.com/LeoFeatherstone/clockor2Paper}. The code for Clockor2 is open source at \url{https://github.com/clockor2/clockor2}.
 
 \bibliography{clockor2}
 

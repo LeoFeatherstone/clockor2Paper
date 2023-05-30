@@ -1,5 +1,5 @@
 library(ape)
-
+library(scales)
 ### Generating trees to test clockor2 bfr performance
 
 ## Trees for bfr timing, want num tips = 10^2,...,10^5
@@ -33,10 +33,20 @@ time <- data.frame(
 )
 
 # on mac M1
-# chrome v 110.5481.177
+# chrome v 113.0.5627.126
 # tempest v1.5.3
 time <- data.frame(
     nTips =        c(100,      500,     1000,      5000,    10000),
-    clockor2Time = c("1.239",  "1.70", "4.43",    "95.26",  "422.11"),
+    clockor2Time = c("0.26",  "1.53", "5.35",    "189.02",  "422.11"),
     tempestTime  = c("< 1",    "2.40", "10.28",  "272.29", "1310.34")
 )
+
+# try plot
+time <- data.frame(
+    nTips =        c(100,      500,     1000,      5000,    10000),
+    clockor2Time = as.numeric(c("0.26",  "1.53", "5.35",    "189.02",  "1082.63")),
+    tempestTime  = as.numeric(c("0.26",    "2.40", "10.28",  "272.29", "1310.34"))
+)
+# # if plot
+# time <- time %>% 
+#     pivot_longer(cols = ends_with("Time"), names_to = "Tool", values_to = "Time")

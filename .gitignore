@@ -1,1 +1,14 @@
 .trees
+.Rhistory
+.RData
+.lintr
+# mac cruft
+.DS_Store
+# latex cruft
+*.aux
+*.bbl
+*.blg
+*.dvi
+*.log
+*.out
+*.synctex.gz
