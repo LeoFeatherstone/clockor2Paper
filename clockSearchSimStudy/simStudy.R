@@ -203,7 +203,7 @@ p <- ggplot(data) +
     "No. Clocks\nIdentified") +
   theme_minimal() 
 
-pdf(file = "../figures/inferredClocks.pdf", 
+pdf(file = "inferredClocks.pdf", 
   width = 6, 
   height = 3,
   useDingbats = F
@@ -296,7 +296,7 @@ tree2 <- tree2 %<+%
 p1 <- cowplot::plot_grid(rtt1, tree1, rtt2, tree2, labels = "AUTO")
 p2 <- cowplot::plot_grid(p1, leg, ncol = 1, rel_heights = c(6, 1))
 
-pdf(file="../figures/egRTT.pdf", width = 6, height=6, useDingbats = F)
+pdf(file="egRTT.pdf", width = 6, height=6, useDingbats = F)
   p2
 dev.off()
 
