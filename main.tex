@@ -2,19 +2,17 @@
 \usepackage{main}
 
 \title{Clockor2:  Inferring global and local strict molecular clocks using root-to-tip regression}
+\author{Leo A. Featherstone$^{\ast,1}$, Sebastian Duchene$^{\dagger,1}$, Wytamma Wirth$^{\dagger,1}$\\}
+\date{}
+
 \begin{document}
-
 \maketitle
-\begin{centering}
-Leo A. Featherstone$^{\ast,1}$, Sebastian Duchene$^{\dagger,1}$, Wytamma Wirth$^{\dagger,1}$\\
+
 $^{1}$ Peter Doherty Institute for Infection and Immunity, University of Melbourne, Australia.\\
-
-*email: leo.featherstone@unimelb.edu.au
-\end{centering}
-
+*email: leo.featherstone@unimelb.edu.au\\
 $^{\dagger}$ These authors supervised this work equally.
 
-
+\linenumbers
 \section*{Abstract}
 Molecular sequenced data from rapidly evolving organisms are often sampled at different points in time. Sampling times can then be used for molecular clock calibration. The root-to-tip (RTT) regression is an essential tool to assess the degree to which the data are amenable to such analyses and behave in a clock-like fashion. Here, we introduce clockor2, a client-side web application for conducting RTT regression. Clockor2 uniquely allows users to quickly fit local and global molecular clocks, thus handling the increasing complexity of genomic datasets that sample beyond the assumption homogeneous host populations. Clockor2 is efficient, handling trees of up to $10^5$ tips, with significant speed increases compared to other RTT regression applications. Although clockor2 is written as a web application, all data processing happens on the client-side, meaning that data never leaves the user's computer. Clockor2 is freely available at \url{https://clockor2.github.io/}.
 
