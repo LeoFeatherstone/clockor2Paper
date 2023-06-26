@@ -1,5 +1,6 @@
 \documentclass{article}
 \usepackage{main}
+\usepackage{amsmath}
 
 \begin{document}
 \section{Information Criteria for Local Clocks}
@@ -55,5 +56,78 @@ Finally, the clock search searches for a $1,...,c$ clocks, so completes in a num
 The number of steps can be reduced by reducing the number of clocks searched for and increasing the minimum group size.
 
 As noted above, tree topology also affects $p(t,c,s)$ also affects the number of steps taken to complete the clock search, but we expect this to affect efficiency the least out of the tree parameters, and is usually expected to be beyond the control of the researcher anyway. For completeness, we note that a perfectly balanced tree requires the most steps for the algorithm to complete while a completely imbalanced, ladder tree would require the least.
+
+\section{Best Fitting root Targeting Residual Mean Squared}
+When searching for the best fitting root, for each proposed root there is the question of where to place the root between the two descending branches to maximise temporal signal. In Clockor2, this point is selected by maximising $R^2$, or minimising the residual mean squared. For the residual mean square, there is an analytical solution for this point that we derive here.
+
+First, define the following:
+\begin{enumerate}
+
+    \item $L$ is the sum of basal branch lengths leading to the left and right root child.
+    \item {$t_i$}, The sampling times associated with each tip ($d_i$)
+    \item {$c_i$}, An indicator variable indicating whether a tip descending from the left or right node descending from the root. $c_i = -1$ if descending from the left child, and $c_i = 1$ if descending from the right.
+    \item {$d_i$}, \textnormal{The set of root-to-tip distances where all basal branch length is shifted to the right-root child.}
+    \item $x$ is the portion of total branch length $L$ that we add to $d_i$ descending from the left root-child and subtract from $d_i$ descending from the right root-child
+\end{enumerate}
+
+Now, to capture the different to root-to-tip distances that come with shifting the root position, we define:
+\begin{equation}
+\begin{aligned}
+    d^{\prime}_i = d_{i} + c_{i}x
+\end{aligned}
+\end{equation}
+
+And we seek to minimise with respect to $x$ the Residual Mean Square:
+\begin{equation}
+    \textnormal{RSM}(x) = \frac{1}{n-2}\sum_{i}(\hat{d^{\prime}_i} - d^{\prime}_i)^2
+\end{equation}
+
+Which is equivalent to minimising the Residual Sum of Squares(RSS)
+\begin{equation}
+\begin{aligned}
+    \textnormal{RSS}(x) = \sum_{i}(\hat{d^{\prime}_i} - d^{\prime}_i)^2 \\
+    = S_{d^{\prime}d^{\prime}} - S_{td^{\prime}}^2S_{tt}^{-1}
+\end{aligned}
+\end{equation}
+
+\begin{equation}
+\begin{aligned}
+        \textnormal{Where } S_{d^{\prime}d^{\prime}} = \sum_{i}(\bar{d^{\prime}} - d^{\prime}_i)^2,
+        S_{tt}= \sum_{i}(\bar{t} - t_i)^2, \textnormal{ and } 
+        S_{d^{\prime}t} = \sum_{i}(\bar{d^{\prime}}-d_i)(\bar{t}-t_i)
+\end{aligned}
+\end{equation}
+
+Subbing $d^{\prime}_i = d_{i} + c_{i}x$ into each of $S_{d^{\prime}d^{\prime}}$, $S_{tt}$, and $S_{d^{\prime}t}$, we come to:
+\begin{equation}
+\begin{aligned}
+    \textnormal{RSS}(x) = S_{dd} - 2xS_{dc} + x^{2}S_{cc} - S_{tt}^{-1}(S_{dt} - 2xS_{dt}S_{tc} + x^{2}S_{tc}^{2})
+\end{aligned}
+\end{equation}
+
+
+Observe that RSS($x$) is quadratic in $x$, and that $ \textnormal{RSS} \ge 0$, so there must be a global minimum we can solve for.
+
+We therefore solve:
+
+\begin{equation}
+\begin{aligned}
+    &\frac{d}{dx}\textnormal{RSS}(x) = 0 \\
+    &\implies  -2S_{dc} + 2xS_{cc} + 2S_{td}S_{tc}S_{tt}^{-1} - 2xS_{tc}^{2}S_{tt}^{-1} = 0 \\
+    &\implies x = \frac{S_{dc}-S_{ty}S_{tc}S_{tt}^{-1}}{S_{cc}-S_{tc}^2S_{tt}^{-1}}
+\end{aligned}
+\end{equation}
+
+Finally, it may be that $x > L$. For this reason, Clockor2 internally relies on $\alpha = \frac{x}{L}$, the proportion of $L$ assigned to the left branch under the best fitting root. Then, we take the following as the solution:
+
+\begin{equation}
+\begin{aligned}
+    \alpha = \max \left \{ \min \left \{ \frac{S_{dc}-S_{td}S_{tc}S_{tt}^{-1}}{L(S_{cc}-S_{tc}^2S_{tt}^{-1})} \right \}, 1), 0  \right \} 
+\end{aligned}
+\end{equation}
+
+
+
+
 
 \end{document}
