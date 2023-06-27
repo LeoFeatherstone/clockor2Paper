@@ -1,5 +1,6 @@
 \documentclass{article}
 \usepackage{main}
+\usepackage{multirow}
 
 \title{Clockor2:  Inferring global and local strict molecular clocks using root-to-tip regression}
 \author{Leo A. Featherstone$^{\ast,1}$, Andrew Rambaut$^{2}$, Sebastian Duchene$^{\dagger,1}$, Wytamma Wirth$^{\dagger,1}$\\}
@@ -96,15 +97,17 @@ Clockor2 has three key dependencies for handling, and plotting trees and RTT dat
 Clockor2 can process trees of up to the order of $10^4$ tips, thus fit for the expanding size and diversity of phylodynamic datasets. Finding the best fitting root makes use of parallelisation to increase speed. Speedup is therefore proportional to the number of threads or cores available, in addition to the chose of browser and computer. For example, Clockor2 is faster than TempEst v 1.5.3 a 2021 Mackbook pro with 16Gb of memory and 8 cores running chrome v113.0.5627.126, (Table \ref{tab:bfr}). However, we found Clockor2 to be comparable or slower on other combinations of processor and browser. 
 \begin{table}[H]
     \centering
-    \begin{tabular}{|l|c|c|}
+    \begin{tabular}{|l|c|c|c|c|}
     		\hline
-        Tips    & Clockor2  & TempEst   \\
+    				 & \multicolumn{3}{|c|}{$R^{2}$} & \multicolumn{2}{|c|}{Root Mean Squared}  \\
+    		\hline
+        Tips    & Clockor2  & TempEst & Clockor2  & TempEst   \\
         \hline
-        100     & 0.26     & $<$ 1     \\
-        500     & 1.53      & 2.40      \\
-        1000    & 5.35      & 10.28      \\
-        5000    &  189.02   & 272.29   \\
-        10000   &  1082.63  & 1310.34    \\
+        100 & 0.26 & 0.76 & 0.05 & 0.17 \\
+        500 & 1.53 & 2.40 & 1.5 & 0.964 \\
+        1000 & 5.35 & 10.28 & 5.43 & 2.782 \\
+        5000 & 189.02 & 272.29 & 122 & 113.581 \\
+        10000 & 422.11 & 1310.34 & 951.00 & 698.065 \\
         \hline
     \end{tabular}
     \caption{Time taken to find the best fitting root for test trees of 100, 500, 1000, 5000, and 10000 tips using Clockor2 and TempEst v1.5.3 on a 2021 Macbook with 16Gb of memory and 8 cores running chrome v113.0.5627.126. Times vary with computer and browser. In general the relative efficiency of Clockor2 will increase with the number of cores.}
