@@ -63,10 +63,10 @@ When searching for the best fitting root, for each proposed root there is the qu
 First, define the following:
 \begin{enumerate}
 
-    \item $L$ is the sum of basal branch lengths leading to the left and right root child.
-    \item {$t_i$}, The sampling times associated with each tip ($d_i$)
-    \item {$c_i$}, An indicator variable indicating whether a tip descending from the left or right node descending from the root. $c_i = -1$ if descending from the left child, and $c_i = 1$ if descending from the right.
-    \item {$d_i$}, \textnormal{The set of root-to-tip distances where all basal branch length is shifted to the right-root child.}
+    \item $L$ is the sum of basal branch lengths leading to the left and right root-child.
+    \item {$d_i$}, The set of root-to-tip distances where all basal branch length ($L$) is shifted to the branch leading to the right root-child.
+    \item {$t_i$}, The sampling times associated with each $d_i$
+    \item {$c_i$}, An indicator variable indicating whether a tip descending from the left or right root-child. $c_i = -1$ if descending from the left child, and $c_i = 1$ if descending from the right.
     \item $x$ is the portion of total branch length $L$ that we add to $d_i$ descending from the left root-child and subtract from $d_i$ descending from the right root-child
 \end{enumerate}
 
