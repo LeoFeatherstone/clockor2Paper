@@ -16,7 +16,7 @@ $^{\dagger}$ These authors supervised this work equally.
 
 \linenumbers
 \section*{Abstract}
-Molecular sequence data from rapidly evolving organisms are often sampled at different points in time. Sampling times can then be used for molecular clock calibration. The root-to-tip (RTT) regression is an essential tool to assess the degree to which the data are amenable to such analyses and behave in a clock-like fashion. Here, we introduce Clockor2, a client-side web application for conducting RTT regression. Clockor2 uniquely allows users to quickly fit local and global molecular clocks, thus handling the increasing complexity of genomic datasets that sample beyond the assumption homogeneous host populations. Clockor2 is efficient, handling trees of up to the order of $10^4$ tips, with significant speed increases compared to other RTT regression applications. Although clockor2 is written as a web application, all data processing happens on the client-side, meaning that data never leaves the user's computer. Clockor2 is freely available at \url{https://clockor2.github.io/}.
+Molecular sequence data from rapidly evolving organisms are often sampled at different points in time. Sampling times can then be used for molecular clock calibration. The root-to-tip (RTT) regression is an essential tool to assess the degree to which the data behave in a clock-like fashion. Here, we introduce Clockor2, a client-side web application for conducting RTT regression. Clockor2 uniquely allows users to quickly fit local and global molecular clocks, thus handling the increasing complexity of genomic datasets that sample beyond the assumption homogeneous host populations. Clockor2 is efficient, handling trees of up to the order of $10^4$ tips, with significant speed increases compared to other RTT regression applications. Although clockor2 is written as a web application, all data processing happens on the client-side, meaning that data never leaves the user's computer. Clockor2 is freely available at \url{https://clockor2.github.io/}.
 
 \textbf{Keywords:} Molecular clock, evolutionary rate heterogeneity, root-to-tip regression.
 
@@ -91,7 +91,7 @@ The best fitting root is inferred using a single, global clock because it presen
 values of each model. Clockor2 does not find the best fitting root for local clock models because the search space of best fitting roots and local clock configurations quickly becomes prohibitive and is possibly unidentifiable.
 
 \subsection*{Dependencies}
-Clockor2 has three key dependencies for handling, and plotting trees and RTT data. Trees are handled and manipulated using the phylojs library \textcolor{red}{[TODO: Cite preprint/NPM repo for phylojs once up]}. Phylocanvas is used to viaualise trees and plotly.js is used to plot RTT data \citep{abudahab_phylocanvasgl_2021,plotly}.
+Clockor2 has three key dependencies for handling, and plotting trees and RTT data. Trees are handled and manipulated using the \href{https://github.com/clockor2/phylojs}{phylojs} library. Phylocanvas is used to viaualise trees and plotly.js is used to plot RTT data \citep{abudahab_phylocanvasgl_2021,plotly}.
 
 \section*{Results}
 \subsection*{Efficiency}
@@ -140,6 +140,9 @@ In the future it will be possible to re-implement core functionality in increasi
 
 \section*{Data availability}
 All code required to replicate the simulation study and figures in the paper is available at \url{https://github.com/LeoFeatherstone/clockor2Paper}. The code for Clockor2 is open source at \url{https://github.com/clockor2/clockor2}.
+
+\section*{Acknowledgements}
+We are grateful to Luiz Max Carvalho for helpful correspondence in ascertaining the analytical solution for the position of the best fitting root using the root mean squared.
 
 \bibliography{clockor2}
 
