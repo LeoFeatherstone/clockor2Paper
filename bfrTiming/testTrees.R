@@ -28,8 +28,14 @@ for (i in seq_along(trees)) {
 # chromium v111.0.5563.64
 R2 <- data.frame(
     nTips =        c(100,      500,     1000,      5000,    10000),
-    clockor2Time = c("0.47", "2.609", "7.819" , "235.979",   "1121.833"    ),
-    tempestTime  = c("< 1",   "1.52",  "5.51",    "166.33", "820.0")
+    tempestTime  = c("< 1",   "1.52",  "5.51",    "166.33", "820.0"),
+    clockor2Time = c("0.097", "2.234", "8.933" , "313.048",   ""    )
+)
+
+RMS <- data.frame(
+    nTips =        c(100,      500,     1000,      5000,    10000),
+    tempestTime = c("",    "",   "",    "",  ""),
+    clockor2Time  = c("0.162", "0.419", "2.152",  "46.935", "")
 )
 
 # on mac M1
@@ -37,14 +43,14 @@ R2 <- data.frame(
 # tempest v1.5.3
 R2 <- data.frame(
     nTips =        c(100,      500,     1000,      5000,    10000),
-    clockor2Time = c("0.26",  "1.53", "5.35",    "189.02",  "422.11"),
-    tempestTime  = c("0.76",    "2.40", "10.28",  "272.29", "1310.34")
+    tempestTime  = c("0.76",    "2.40", "10.28",    "272.29",  "1310.34"),
+    clockor2Time = c("0.313",  "1.370", "3.476",    "78.013",  "306.821")
 )
 
 RMS <- data.frame(
     nTips =        c(100,      500,     1000,      5000,    10000),
     tempestTime = c("0.05",    "1.5",   "5.43",    "122",  "951.00"),
-    clockor2Time  = c("0.17",    "0.964", "2.782",  "113.581", "698.065")
+    clockor2Time  = c("0.129", "0.502", "1.514",  "24.370", "94.992")
 )
 
 tab <- bind_rows("R-Squared" = R2, "Residual Mean Squared" = RMS, .id = "Objective") %>% 
