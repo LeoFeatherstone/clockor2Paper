@@ -2,7 +2,7 @@
 \usepackage{main}
 \usepackage{multirow}
 
-\title{Clockor2:  Inferring global and local strict molecular clocks using root-to-tip regression}
+\title{Clockor2:  Inferring global and local strict molecular clocks using root-to-tip regression \\ \large Running title: Root-to-tip regression wth Clockor2}
 \author{Leo A. Featherstone$^{\ast,1}$, Andrew Rambaut$^{2}$, Sebastian Duchene$^{\dagger,1}$, Wytamma Wirth$^{\dagger,1}$\\}
 \date{}
 
@@ -105,11 +105,11 @@ Clockor2 can process trees of up to the order of $10^4$ tips, thus fit for the e
     		\hline
         Tips    & Clockor2  & TempEst & Clockor2  & TempEst   \\
         \hline
-        100 & 0.26 & 0.76 & 0.05 & 0.17 \\
-        500 & 1.53 & 2.40 & 1.5 & 0.964 \\
-        1000 & 5.35 & 10.28 & 5.43 & 2.782 \\
-        5000 & 189.02 & 272.29 & 122 & 113.581 \\
-        10000 & 422.11 & 1310.34 & 951.00 & 698.065 \\
+        100  & 0.313 & 0.760 & 0.129 & 0.050 \\
+        500  & 1.370 & 2.400 & 0.502 & 1.500 \\
+        1000  & 3.476 & 10.280 & 1.514 & 5.430 \\
+        5000 & 78.013 & 272.290 & 24.370 & 122.000 \\
+        10000  & 306.821 & 1310.340 & 94.992 & 951.000 \\
         \hline
     \end{tabular}
     \label{tab:bfr}
@@ -139,10 +139,13 @@ In the future it will be possible to re-implement core functionality in increasi
 
 
 \section*{Data availability}
-All code required to replicate the simulation study and figures in the paper is available at \url{https://github.com/LeoFeatherstone/clockor2Paper}. The code for Clockor2 is open source at \url{https://github.com/clockor2/clockor2}.
+All code required to replicate the simulation study and figures in the paper is available at \url{https://github.com/LeoFeatherstone/clockor2Paper}. The code for Clockor2 is open source at \url{https://github.com/clockor2/clockor2}. No empirical data is associated with this paper.
 
 \section*{Acknowledgements}
 We are grateful to Luiz Max Carvalho for helpful correspondence in ascertaining the analytical solution for the position of the best fitting root using the root mean squared.
+
+\section*{Disclosure Statement}
+The authors declare no conflict of interest.
 
 \bibliography{clockor2}
 
