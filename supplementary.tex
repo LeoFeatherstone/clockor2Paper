@@ -4,7 +4,7 @@
 
 \begin{document}
 \section{Information Criteria for Local Clocks}
-Clockor2 uses the AIC, AICc, and BIC to compare local clock models. Here we begin by giving the formula for each. Each criterion depends on the number of samples ($n$), number of inferred parameters ($k=3$ per clock), and the likelihood of the model fit ($\hat{L}$). We capitalise upon the assumption of independant sampling in root-to-tip regression to factorise the likelihood and calculate information criteria for local clock models.
+Clockor2 uses the AIC, AICc, and BIC to compare local clock models. Here we begin by giving the formula for each. Each criterion depends on the number of samples ($n$), number of inferred parameters ($k=3$ per clock), and the likelihood of the model fit ($\hat{L}$). We capitalise upon the assumption of independent sampling in root-to-tip regression to factorise the likelihood and calculate information criteria for local clock models.
 
 \begin{equation}
     \textnormal{BIC} = k\ln{n} - 2\ln{\hat{L}}
@@ -20,42 +20,42 @@ We begin with the example of two local clocks before generalising to an arbitrar
 
 The log-likelihood, containing the product of probability densities for each data point, can then be factored into the sum of log likelihoods for each local clock:
 \begin{equation}
-    \ln{\hat{L}} = \sum_{i=1}^{2} \ln{\hat{L_{g_{i}}}}
+    \ln{\hat{L}} = \sum_{i=1}^{2} \ln{\hat{L}_{g_{i}}}
 \end{equation}
 
 The number of inferred parameters is also $k = 6 = 2\cdot3$ (intercept, variance, slope).
 
 For example, we can then write the BIC as:
 \begin{equation}
-    \textnormal{BIC} = 6\ln{n} - 2\sum_{i=1}^{2} \ln{\hat{L_{g_{i}}}}
+    \textnormal{BIC} = 6\ln{n} - 2\sum_{i=1}^{2} \ln{\hat{L}_{g_{i}}}
 \end{equation}
 
 Generalising to the case where we have $c$ local clocks, the BIC then becomes:
 \begin{equation}
-    \textnormal{BIC} = (3c)\ln{n} - 2\sum_{i=1}^{c} \ln{\hat{L_{g_{i}}}}
+    \textnormal{BIC} = (3c)\ln{n} - 2\sum_{i=1}^{c} \ln{\hat{L}_{g_{i}}}
 \end{equation}
 
 \section{Efficiency of clock search algorithm}
 We briefly provide reasoning for why the clock search algorithm operates in polynomial time.
-Consider a tree with $n$ tips, and a clock search that searches for a maximum of $c$ clocks each of a max size $s$, ensuring that $cs \le n$.
+Consider a tree with $n$ tips, and a clock search that searches for a maximum of $c$ clocks each of a minimum size $s$, ensuring that $cs \le n$.
 
-Given there are $n$ tips, there are then $2(n-1)$ internal nodes from which a clock can descent, and for a given number of clocks $1,...,c$, there are $p$ internal nodes such that a local clock can descend from each and induce a group with more than $s$ tips ($\|g\| \ge s$). $p$ depends on the topology of the tree (denoted as $t$) as well as the number of clocks ($c$) and minimum group size ($s$), so we now write $p(t,c,s)$ with $1 \le p(t,c,s) \le n$.
+Given there are $n$ tips, there are then $2(n-1)$ internal nodes from which a clock can descend, and for a given number of clocks $1,...,c$, there are $p$ internal nodes such that a local clock can descend from each and induce a group with more than $s$ tips ($\|g\| \ge s$). $p$ depends on the topology of the tree (denoted as $t$) as well as the number of clocks ($c$) and minimum group size ($s$), so we now write $p(t,c,s)$ with $1 \le p(t,c,s) \le n$.
 
-The number of possible combinations for of nodes that can be chosen to fit $c$ local clocks, each of at least size $s$ is then:
+The number of possible combinations of nodes that can be chosen to fit $c$ local clocks, each of at least size $s$ is then:
 \begin{equation}
     \binom{p(t,c,s)}{c} = \frac{p(t,c,s)!}{c!(p(t,c,s)-c)!}
 \end{equation}
 
 That is, the clock search is polynomial in $p(t,c,s)$. $p(t,c,s)$ is related to $n$ by the topology of the particular tree being searched, so we assert for generality that the clock search is polynomial in $n$. $p(t,c,s) = n$ when $c = s = n$.
 
-Finally, the clock search searches for a $1,...,c$ clocks, completing in a number of steps equal to:
+Finally, the clock search searches for $1,...,c$ clocks, completing in a number of steps equal to:
 \begin{equation}
     \sum_{1}^{c} \binom{p(t,c,s)}{i}
 \end{equation}
 
-The number of steps can be reduced by reducing the number of clocks searched for and increasing the minimum group size.
+The number of steps can be reduced by reducing the maximum number of clocks searched for ($c$) and/or increasing the minimum group size ($s$).
 
-As noted above, tree topology also affects $p(t,c,s)$ also affects the number of steps taken to complete the clock search, but we expect this to affect efficiency the least out of the tree parameters, and is usually expected to be beyond the control of the researcher anyway. For completeness, we note that a perfectly balanced tree requires the most steps for the algorithm to complete while a completely imbalanced, ladder tree would require the least.
+As noted above, tree topology also affects $p(t,c,s)$, in turn affecting the number of steps taken in the clock search. We expect topology to have the smallest effect on efficiency compared to the other parameters ($s$, $t$), and it is usually expected to be beyond the control of the researcher anyway. For completeness, we note that a perfectly balanced tree requires the most steps for the algorithm to complete while a completely imbalanced, ladder tree would require the least.
 
 \section{Best Fitting root Targeting Residual Mean Squared}
 When searching for the best fitting root, for each proposed root there is the question of where to place the root between the two descending branches to maximise temporal signal. In Clockor2, this point is selected by maximising $R^2$, or minimising the residual mean squared. For the residual mean square, there is an analytical solution for this point that we derive here.
