@@ -20,18 +20,18 @@ var grp = clockSearch(
     "bic"
 )
 
-if (grp.localClock.length > 0) {
+if (grp.localClock !== undefined) {
     console.log(grp.localClock.length)
     fs.writeFile(
-        "./tmpTips.txt",
-        grp.localClock[0].tip.join("\n"),
+        "./tmp.json",
+        JSON.stringify(grp.localClock),
         (err: any) => {if (err) {console.log(err)}}
     )
 } else {
     console.log(1)
     fs.writeFile(
-        "./tmpTips.txt",
-        grp.baseClock.tip.join("\n"),
+        "./tmp.json",
+        JSON.stringify(grp.baseClock),
         (err: any) => {if (err) {console.log(err)}}
     )
 }

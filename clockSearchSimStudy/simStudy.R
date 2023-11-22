@@ -10,6 +10,7 @@ library(NELSI)
 library(tidyverse)
 library(ggplot2)
 library(latex2exp)
+library(rjson)
 
 setwd("./clockSearchSimStudy/")
 
@@ -36,7 +37,6 @@ getRandClade <- function(tr, minSize, maxSize){
 }
 
 ## Simulating 100 test trees. Using BD for heterochronous trees. Height added to 2000.
-## Using a Unif[100, 1000] for number of tips
 trees <- list()
 class(trees) <- "multiPhylo"
 
@@ -81,6 +81,13 @@ for (i in seq_along(clades)){
 
 }
 
+## Add noise to branch lengths
+for (i in seq_along(trees)) {
+  trees[[i]]$edge.length <- sapply(
+    trees[[i]]$edge.length,
+    function(x) {return(x + runif(min = -0.5 * x, max = 0.5 * x, n = 1))}
+  )
+}
 
 ## Generate simple FLC trees with global rate of 1e-3 and local rate of 5e-3
 stemClade <- list()
@@ -109,45 +116,60 @@ for (i in 1:length(trees)){
 
 # wrapper function to use in testing clockSearch()
 testClockSearch <- function(maxClocks, testTrees, baseTrees, trueClades) {
-  data <- data.frame()
+  df <- data.frame()
 
   for (i in seq_along(baseTrees)){
     cmd <- paste0("'", write.tree(testTrees[[i]]), "' ", 50, ' ', maxClocks)
-    op <- system(
+    system(
       # Enter node path
-      paste('$(NODE_PATH) ./clockSearchWrapper.js', cmd), 
+      paste('/home/leo/.nvm/versions/node/v20.9.0/bin/node ./clockSearchWrapper.js', cmd), 
       intern = TRUE
     )
-    
-    inferredNumClocks <- as.numeric(op)
-    grp <- read.table(
-      "./tmpTips.txt", 
-      header = FALSE
+    op <- fromJSON(file = "tmp.json")   
+
+    data <- do.call(
+      rbind,
+      lapply(
+        op,
+        function(x)
+        return(
+          c(
+            i,
+            maxClocks,
+            length(op),
+            x$slope,
+            max(
+              length(which(x$tip %in% trueClades[[i]])) / length(trueClades[[i]]),
+              1 - (length(which(x$tip %in% trueClades[[i]])) / length(trueClades[[i]]))
+            ),
+            length(x$tip)
+          )
+        )
+      )
     )
 
-    pcMatchGroup1 <- length(which(grp$V1 %in% trueClades[[i]])) / length(grp$V1)
-    group2 <- baseTrees[[i]]$tip.label[-(which(baseTrees[[i]]$tip.label %in% trueClades[[i]]))]
-    pcMatchGroup2 <- length(which(grp$V1 %in% group2)) / length(grp$V1)
-
-    pcMatch <- max(
-      pcMatchGroup1,
-      pcMatchGroup2
-    )
-
-    data <- rbind(
-      data,
-      c(maxClocks, op, pcMatch)
-    )
+    df <- rbind(df, data)
+    print(paste("#", i, "/", length(baseTrees)))
   }
 
-  colnames(data) <- c("maxClocks", "numGroups", "pcMatch")
-  system("rm ./tmpTips.txt")
+  colnames(df) <- c("id", "testMax", "nChosen", "slope", "maxPcMatch", "size")
+  system("rm ./tmp.json")
 
-  return(data)
+  return(df)
 }
 
+globalClock <- lapply(
+  c(2:4), 
+  function(x) testClockSearch(
+    x,
+    trees,
+    trees,
+    clades
+  )
+)
+
 stemData <- lapply(
-  c(2:5), 
+  c(2:4), 
   function(x) testClockSearch(
     x,
     stem,
@@ -157,7 +179,7 @@ stemData <- lapply(
 )
 
 stemCladeData <- lapply(
-  c(2:5), 
+  c(2:4), 
   function(x) testClockSearch(
     x,
     stemClade,
@@ -166,8 +188,8 @@ stemCladeData <- lapply(
   )
 )
 
-data <- c(stemData, stemCladeData)
-names(data) <- c(rep("stem", 4), rep("stem+clade", 4))
+data <- c(globalClock, stemData, stemCladeData)
+names(data) <- c(rep("Global Clock", 3), rep("2 Local Clocks (stem only)", 3), rep("2 Local Clocks (stem+clade)", 3))
 
 data = bind_rows(
   data, 
