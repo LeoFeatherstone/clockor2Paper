@@ -18,7 +18,7 @@ if (grp.localClock !== undefined) {
 }
 else {
     console.log(1);
-    fs.writeFile("./tmp.json", JSON.stringify(grp.baseClock), function (err) { if (err) {
+    fs.writeFile("./tmp.json", "".concat([JSON.stringify(grp.baseClock)]), function (err) { if (err) {
         console.log(err);
     } });
 }
