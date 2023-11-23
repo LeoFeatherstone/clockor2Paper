@@ -213,7 +213,7 @@ save(data, trees, clades, stem, stemClade, file = "simStudyData.RData")
 ############################################################################
 load("./simStudyData.RData")
 
-### Sim Study Figures
+### Inferred clock group figs
 data %>%
   select(
     type, testMax, nChosen, id
@@ -250,6 +250,70 @@ ggsave(
   file = "../inferredClocks.pdf",
   width = 6,
   height = 3,
+  dpi = 300,
+  units = "in"
+)
+
+### Rate error fig
+scientific_10 <- function(x) {
+  parse(text=gsub("e", " %*% 10^", scales::scientific_format()(x)))
+}
+
+data %>%
+  select(
+    type, testMax, slope, id, nChosen
+  ) %>%
+  group_by(
+    type, testMax, slope, id, nChosen
+  ) %>%
+  mutate(
+    error = case_when(
+      type == "global" ~ abs(0.001 - slope),
+      .default = min(
+      abs(0.001 - slope), abs(0.005 - slope)
+      )
+    )
+  ) %>%
+  ggplot(aes(x = log10(error))) +
+  geom_histogram(fill = alpha("dodgerblue", 0.6)) +
+  #scale_x_continuous(label = scientific_10) +
+  xlab("Absolute error in evolutionary rate (log10)") +
+  ylab("Count") +
+  facet_grid(type ~ nChosen, scales = "free") +
+  theme_bw() +
+  theme(
+    legend.position = "none",
+    axis.text.x =element_text(angle = 60, hjust = 1)
+  )
+
+ggsave(
+  file = "../clockError.pdf",
+  width = 6,
+  height = 6,
+  dpi = 300,
+  units = "in"
+)
+
+### Clade identity fig
+data %>%
+  select(
+    type, testMax, maxPcMatch, id, nChosen
+  ) %>%
+  ggplot(aes(x = 100 * maxPcMatch)) +
+  geom_histogram(fill = alpha("dodgerblue", 0.6)) +
+  xlab("Tue Clade Match (%)") +
+  ylab("Count") +
+  facet_grid(type ~ nChosen, scales = "free") +
+  theme_bw() +
+  theme(
+    legend.position = "none",
+    axis.text.x =element_text(angle = 60, hjust = 1)
+  )
+
+ggsave(
+  file = "../cladeMatch.pdf",
+  width = 6,
+  height = 6,
   dpi = 300,
   units = "in"
 )
