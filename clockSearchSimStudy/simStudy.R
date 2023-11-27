@@ -255,11 +255,7 @@ ggsave(
 )
 
 ### Rate error fig
-scientific_10 <- function(x) {
-  parse(text=gsub("e", " %*% 10^", scales::scientific_format()(x)))
-}
-
-data %>%
+slopeData <- data %>%
   select(
     type, testMax, slope, id, nChosen
   ) %>%
@@ -267,19 +263,27 @@ data %>%
     type, testMax, slope, id, nChosen
   ) %>%
   mutate(
-    error = case_when(
-      type == "global" ~ abs(0.001 - slope),
-      .default = min(
-      abs(0.001 - slope), abs(0.005 - slope)
-      )
+    closest = case_when(
+      type == "global" ~ 0.001,
+      type != "global" & abs(0.001 - slope) < abs(0.005 - slope) ~ 0.001,
+      type != "global" & abs(0.005 - slope) < abs(0.001 - slope) ~ 0.005
     )
   ) %>%
-  ggplot(aes(x = log10(error))) +
-  geom_histogram(fill = alpha("dodgerblue", 0.6)) +
-  #scale_x_continuous(label = scientific_10) +
-  xlab("Absolute error in evolutionary rate (log10)") +
+  mutate(
+    error = slope - closest
+  )
+
+ggplot(data = subset(slopeData, slope < 1), aes(x = slope)) +
+  geom_histogram(fill = alpha("dodgerblue", 0.6), bins = 30) +
+  scale_x_continuous(
+    label = scientific_10,
+   ) +
+  geom_vline(
+    xintercept = c(0.001, 0.005), col = "red"
+  ) +
+  xlab("Estimated evolutionary rate") +
   ylab("Count") +
-  facet_grid(type ~ nChosen, scales = "free") +
+  facet_wrap(type ~ nChosen, scales = "free") +
   theme_bw() +
   theme(
     legend.position = "none",
@@ -294,6 +298,13 @@ ggsave(
   units = "in"
 )
 
+# Statistic on number with 1 global clock that estimated rate above 1
+slopeData  %>%
+  subset(type == "global" & slope >= 1) %>%
+  #group_by(id) %>%
+  summarise(n = n())
+# 13 clocks with rate >= 1 selected across each testMax from 5 trees
+
 ### Clade identity fig
 data %>%
   select(
@@ -301,7 +312,7 @@ data %>%
   ) %>%
   ggplot(aes(x = 100 * maxPcMatch)) +
   geom_histogram(fill = alpha("dodgerblue", 0.6)) +
-  xlab("Tue Clade Match (%)") +
+  xlab("True Clade Match (%)") +
   ylab("Count") +
   facet_grid(type ~ nChosen, scales = "free") +
   theme_bw() +
